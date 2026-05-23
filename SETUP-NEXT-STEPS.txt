@@ -1,0 +1,27 @@
+FreshrFridge — automated setup status
+======================================
+
+DONE FOR YOU:
+  [x] Python 3.12 installed
+  [x] GNU Make installed
+  [x] TuyaOpen SDK at C:\Users\shivr\TuyaOpen
+  [x] FreshrFridge copied to C:\Users\shivr\TuyaOpen\examples\freshrfridge
+  [x] Board config set (T5AI + 3.5" LCD)
+  [x] Firmware built successfully
+
+FIRMWARE FILE:
+  C:\Users\shivr\TuyaOpen\examples\freshrfridge\dist\freshrfridge_1.0.0\
+
+YOUR ONLY STEP LEFT:
+  1. Plug T5 AI board into PC with USB cable
+  2. Double-click:  FreshrFridge\FLASH-FIRMWARE.bat
+
+If flash fails, press RST on the board and run FLASH-FIRMWARE.bat again.
+
+REBUILD LATER:
+  Double-click FreshrFridge\BUILD-FIRMWARE.bat
+
+WEB APP (optional, on PC):
+  cd FreshrFridge
+  npm run dev
+  open http://localhost:5173
