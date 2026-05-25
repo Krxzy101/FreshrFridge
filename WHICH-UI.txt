@@ -1,0 +1,18 @@
+FreshrFridge — which screen do you want on the T5 board?
+============================================================
+
+WRONG (what you had):
+  Plain text UI — "Initializing...", small WiFi icon, chat bubble.
+  Script: old CONFIG_ENABLE_AI_CHAT_GUI_CHATBOT only.
+
+RIGHT for Tuya AI voice (emoji + settings):
+  Big animated emoji in the center.
+  Swipe DOWN on screen → Settings with WiFi icon, volume, reset.
+  Script: BUILD-FLASH-AI-BOARD.bat  (uses emoji UI config now)
+
+GREEN fridge list (no cloud AI voice):
+  "Use first" list, add item, green urgency colors.
+  Script: BUILD-FIRMWARE.bat  then  FLASH-FIRMWARE.bat
+
+WEB app (browser on PC):
+  START-WEB.bat + START-BACKEND.bat — not on the board screen.

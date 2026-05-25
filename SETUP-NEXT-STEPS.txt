@@ -1,27 +1,67 @@
-FreshrFridge — automated setup status
-======================================
+FreshrFridge — FIXED setup (do these in order)
+==============================================
 
-DONE FOR YOU:
-  [x] Python 3.12 installed
-  [x] GNU Make installed
-  [x] TuyaOpen SDK at C:\Users\shivr\TuyaOpen
-  [x] FreshrFridge copied to C:\Users\shivr\TuyaOpen\examples\freshrfridge
-  [x] Board config set (T5AI + 3.5" LCD)
-  [x] Firmware built successfully
+Run CHECK-SETUP.bat or "Check Setup.bat" first — it shows what is OK vs missing.
 
-FIRMWARE FILE:
-  C:\Users\shivr\TuyaOpen\examples\freshrfridge\dist\freshrfridge_1.0.0\
+────────────────────────────────────────────────────────────
+STEP 1 — Web + AI (PC)
+────────────────────────────────────────────────────────────
+  A. Double-click START-BACKEND.bat
+     (Backend lives in Website\Groq — was missing; now installed.)
+     Leave the window OPEN. You should see: Server running http://localhost:3000
 
-YOUR ONLY STEP LEFT:
-  1. Plug T5 AI board into PC with USB cable
-  2. Double-click:  FreshrFridge\FLASH-FIRMWARE.bat
+  B. Double-click START-WEB.bat (second window)
+     Open http://localhost:5173
 
-If flash fails, press RST on the board and run FLASH-FIRMWARE.bat again.
+  C. Add an item → Get suggestions → Speak summary
 
-REBUILD LATER:
-  Double-click FreshrFridge\BUILD-FIRMWARE.bat
+  If backend says missing .env:
+     Copy Website\Groq\.env.example → .env
+     Set GROQ_API_KEY=your_key from https://console.groq.com
 
-WEB APP (optional, on PC):
-  cd FreshrFridge
-  npm run dev
-  open http://localhost:5173
+────────────────────────────────────────────────────────────
+STEP 2 — Board firmware (must rebuild once after fix)
+────────────────────────────────────────────────────────────
+  Your board config was corrected (English, stable UI).
+  You MUST run a full build+flash once:
+
+  1. Plug board USB (data cable)
+  2. Double-click BUILD-FLASH-AI-BOARD.bat
+  3. Wait 3-8 min for BUILD SUCCESS — do not close
+  4. Press Enter when flash asks
+  5. When you see "Waiting Reset" → press RST on board once
+  6. Wait for FLASH SUCCESS
+
+  Later flashes only: FLASH-AI-BOARD.bat (faster, no rebuild)
+
+  COM port wrong? Device Manager → edit config.bat (COM_PORT=COM??)
+
+────────────────────────────────────────────────────────────
+STEP 3 — Board WiFi (fixes "Initializing..." stuck screen)
+────────────────────────────────────────────────────────────
+  "Initializing..." = board is on but NOT on WiFi/cloud yet.
+
+  1. Install Tuya Smart (or Smart Life) on phone
+  2. Add device → connect board to home WiFi (2.4 GHz)
+  3. Wait 1-2 min — screen should change (e.g. Standby)
+
+  WiFi icon on screen (top-right): tap it → "WiFi setup mode..."
+     Then use Tuya Smart app on your phone to finish WiFi.
+
+  "Uploading..." stuck: board has no WiFi/cloud — tap WiFi icon first, then use
+  the physical talk button on the board (not the screen) after WiFi connects.
+
+  If still Initializing after WiFi:
+     - Run BUILD-FLASH-AI-BOARD.bat again (includes WiFi button fix)
+     - Check device_secrets.config has ONE uuid+key from Tuya for THIS board
+
+────────────────────────────────────────────────────────────
+Quick menu
+────────────────────────────────────────────────────────────
+  PowerShell in FreshrFridge folder:  .\Run.ps1
+
+  CHECK-SETUP.bat     — verify paths
+  START-BACKEND.bat   — AI server
+  START-WEB.bat       — browser UI
+  BUILD-FLASH-AI-BOARD.bat — build + flash board (do once now)
+  FLASH-AI-BOARD.bat  — flash only

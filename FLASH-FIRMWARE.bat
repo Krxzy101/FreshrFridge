@@ -1,13 +1,36 @@
 @echo off
-set PY=C:\Users\shivr\AppData\Local\Programs\Python\Python312\python.exe
-set CLI=C:\Users\shivr\TuyaOpen\tools\tyutool\tyutool_cli.py
+setlocal EnableExtensions
+call "%~dp0config.bat"
 
-set PYTHONIOENCODING=utf-8
-set PYTHONUTF8=1
-set PATH=C:\Users\shivr\AppData\Local\Programs\Python\Python312;C:\Users\shivr\AppData\Local\Programs\Python\Python312\Scripts;%PATH%
+set "TOS=%TUYA_OPEN%\tos.py"
+set "APP=%TUYA_OPEN%\examples\freshrfridge"
+set "BIN=%APP%\.build\bin\freshrfridge_QIO_1.0.0.bin"
 
-echo Make sure the T5 AI board is plugged into COM11.
+echo.
+echo === Flash fridge UI on %COM_PORT% ===
+echo.
+
+if not exist "%BIN%" (
+    echo ERROR: Run BUILD-FIRMWARE.bat first.
+    goto fail
+)
+
+if not exist "%PY%" (
+    echo ERROR: Python not found at %PY%
+    goto fail
+)
+
+echo When you see Waiting Reset, press RST on the board.
 pause
+cd /d "%APP%"
+"%PY%" "%TOS%" flash -p %COM_PORT% -b 115200
+if errorlevel 1 goto fail
 
-"%PY%" "%CLI%" write -d T5AI -p COM12 -b 115200 -f C:\Users\shivr\TuyaOpen\examples\freshrfridge\.build\bin\freshrfridge_QIO_1.0.0.bin
+echo FLASH SUCCESS - green FreshrFridge screen
+goto done
+
+:fail
+echo FLASH FAILED - check USB and COM port in config.bat
+:done
 pause
+endlocal

@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { AddItemForm } from './components/AddItemForm'
+import { AssistantPanel } from './components/AssistantPanel'
 import { FridgeItemCard } from './components/FridgeItemCard'
 import { UseFirstPanel } from './components/UseFirstPanel'
 import { useFridgeItems } from './hooks/useFridgeItems'
@@ -47,6 +48,8 @@ function App() {
 
       <main className="mx-auto max-w-3xl space-y-6 px-4 py-8">
         <AddItemForm onAdd={addItem} />
+
+        <AssistantPanel items={items} />
 
         <div className="flex gap-2 rounded-xl bg-white p-1 shadow-sm ring-1 ring-slate-100">
           <button
@@ -119,7 +122,7 @@ function App() {
       </main>
 
       <footer className="pb-8 text-center text-xs text-slate-400">
-        Data saved in your browser · nothing leaves this device
+        Inventory saved in your browser · AI suggestions use the local backend when online
       </footer>
     </div>
   )

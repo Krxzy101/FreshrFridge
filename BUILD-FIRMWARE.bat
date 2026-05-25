@@ -1,56 +1,40 @@
 @echo off
-REM One-click: copy sources, merge secrets, build FreshrFridge firmware
-setlocal
-set PY=C:\Users\shivr\AppData\Local\Programs\Python\Python312\python.exe
-set TOS=C:\Users\shivr\TuyaOpen\tos.py
-set APP=C:\Users\shivr\TuyaOpen\examples\freshrfridge
-set SRC=%~dp0tuya-t5\freshrfridge
+setlocal EnableExtensions
+call "%~dp0config.bat"
 
-if not exist "%PY%" (
-    echo Python 3.12 not found. Install from https://www.python.org/downloads/
-    pause
-    exit /b 1
-)
+set "REPO=%~dp0"
+set "TOS=%TUYA_OPEN%\tos.py"
+set "APP=%TUYA_OPEN%\examples\freshrfridge"
+set "SRC=%REPO%tuya-t5\freshrfridge"
 
-if not exist "%TOS%" (
-    echo TuyaOpen not found at C:\Users\shivr\TuyaOpen
-    pause
-    exit /b 1
-)
+echo.
+echo === Build FreshrFridge touch UI firmware ===
+echo.
 
 if not exist "%SRC%\config\device_secrets.config" (
-    echo.
-    echo  Create %SRC%\config\device_secrets.config first
-    echo  ^(copy from device_secrets.config.example and add uuid + key^)
-    echo.
-    pause
-    exit /b 1
+    echo ERROR: Missing device_secrets.config
+    goto fail
 )
 
-echo Copying freshrfridge...
-xcopy /E /I /Y "%SRC%\*" "%APP%\" >nul
-call "%APP%\config\merge-secrets.bat"
-
-if not exist "%PY:\python.exe=python3.exe%" (
-    copy /Y "%PY%" "%PY:\python.exe=python3.exe%" >nul
+if not exist "%PY%" (
+    echo ERROR: Python not found at %PY%
+    goto fail
 )
 
-set PYTHONIOENCODING=utf-8
-set PYTHONUTF8=1
-set PATH=C:\Users\shivr\AppData\Local\Programs\Python\Python312;C:\Users\shivr\AppData\Local\Programs\Python\Python312\Scripts;C:\Program Files (x86)\GnuWin32\bin;C:\Users\shivr\TuyaOpen\platform\T5AI\tools\bash\bin;%PATH%
+powershell -NoProfile -ExecutionPolicy Bypass -File "%REPO%tuya-t5\deploy-to-tuyaopen.ps1"
+if errorlevel 1 goto fail
 
-echo Building ^(5-10 minutes first time^)...
+echo Building...
 cd /d "%APP%"
 "%PY%" "%TOS%" build
-if errorlevel 1 (
-    echo BUILD FAILED
-    pause
-    exit /b 1
-)
+if errorlevel 1 goto fail
 
 echo.
-echo BUILD SUCCESS
-echo Firmware: %APP%\dist\
-echo.
-echo Next: plug in T5 board USB, run FLASH-FIRMWARE.bat
+echo BUILD OK - run FLASH-FIRMWARE.bat on port %COM_PORT%
+goto done
+
+:fail
+echo BUILD FAILED
+:done
 pause
+endlocal

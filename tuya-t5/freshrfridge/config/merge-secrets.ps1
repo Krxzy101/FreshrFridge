@@ -42,5 +42,5 @@ Write-Host ""
 Write-Host "  Done! Credentials merged into:" -ForegroundColor Green
 Write-Host "  $boardFile"
 Write-Host ""
-Write-Host "  Next: copy freshrfridge to TuyaOpen/apps, then build and flash."
+Write-Host "  Next: run BUILD-FIRMWARE.bat in the FreshrFridge folder."
 Write-Host ""

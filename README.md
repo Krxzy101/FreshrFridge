@@ -36,9 +36,22 @@ npm run preview
 
 Set expiry dates when you can for the most accurate priority list.
 
+## AI assistant + database (PC)
+
+1. `Website\Groq` — Groq API + SQLite (`freshrfridge.db`). Copy `.env.example` → `.env`, set `GROQ_API_KEY`.
+2. Double-click **`START-BACKEND.bat`** (port 3000).
+3. Double-click **`START-WEB.bat`** → http://localhost:5173 — use **Get suggestions** and **Speak summary**.
+
+See **[SETUP-NEXT-STEPS.txt](SETUP-NEXT-STEPS.txt)** for the full checklist.
+
+**Quick start (PowerShell):** `.\Run.ps1`
+
 ## Tuya T5 AI (touchscreen on the fridge)
 
-Copy `tuya-t5/freshrfridge` into your [TuyaOpen](https://github.com/tuya/TuyaOpen) `apps/` folder, select the T5AI 3.5" LCD board, build, and flash. Full steps: **[tuya-t5/README.md](tuya-t5/README.md)**.
+- **Fridge UI (local flash storage):** `BUILD-FIRMWARE.bat` then `FLASH-FIRMWARE.bat`
+- **WiFi + AI voice (English on screen and speaker):** `BUILD-FLASH-AI-BOARD.bat`
+
+Manual SDK steps: **[tuya-t5/README.md](tuya-t5/README.md)**.
 
 On the device:
 
